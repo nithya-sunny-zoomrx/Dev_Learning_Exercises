@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details Page</title>
+</head>
+<style>
+    table,
+    th,
+    td {
+        border: 1px solid blue;
+    }
+
+    table {
+        width: 50%;
+    }
+
+    th,
+    td {
+        text-align: center;
+    }
+
+    button {
+        margin: 7px;
+    }
+
+    .withdraw {
+        background-color: red;
+        opacity: 0.7;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-weight: bold; 
+    }
+
+    .deposit {
+        background-color: green;
+        opacity: 0.7;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-weight: bold; 
+    }
+</style>
+
+<body>
+
+    <h2>USER DETAILS</h2>
+    <h3 id="userName"></h3>
+    <h3 id="mail"></h3>
+    <h3 id="phone"></h3>
+
+
+    <!-- <div id="table-container"></div> -->
+    <table border="1" id="accountTable">
+        <thead>
+            <tr>
+                <th>Account Number</th>
+                <th>Account Type</th>
+                <th>Balance</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Rows will be inserted here by JavaScript -->
+        </tbody>
+    </table>
+
+    <script src="jsfile2.js"></script>
+
+</body>
+
+</html>
