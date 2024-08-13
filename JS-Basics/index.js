@@ -1,5 +1,6 @@
 "use strict";
 
+
 // Week 1 - Q1
 let arr1 = [1, 2, 3, 4];
 let arr2 = [false, false, false, false];
