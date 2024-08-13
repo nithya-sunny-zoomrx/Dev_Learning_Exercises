@@ -1,6 +1,7 @@
 let currentUser = JSON.parse(localStorage.getItem("UserInfo"));
 let arrayData = currentUser.accountDetails;
 
+
 // Get the table body element
 const tableBody = document.querySelector('#accountTable tbody');
 

@@ -1,5 +1,6 @@
 "use strict";
 
+
 let currentUser = null;
 let userDetails = [
     {
