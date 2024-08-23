@@ -445,3 +445,88 @@ function isContainsAllCharactersInT(s,t) {
 }
 
 console.log(minimumWindowSubString);
+
+
+// 6. Rotting Oranges
+let grid = [[2, 1, 1], [1, 1, 0], [0, 1, 1]];
+let duplicate = structuredClone(grid);
+let n = grid[0].length;
+let minimumTimeForToRot = 0;
+let changedThisMinute = 0;
+let foundFreshFruit;
+
+
+do {
+
+    changedThisMinute = 0;
+    foundFreshFruit = false;
+
+    for (let i = 0; i < n; i++) {
+
+        for (let j = 0; j < n; j++) {
+
+            if (grid[i][j] == 0 || grid[i][j] == 2) {
+                continue;
+            }
+            
+            foundFreshFruit = true;
+
+            if (checkIfInvalidIndex(i, j + 1)) {
+                
+                if (grid[i][j + 1] == 2) {
+                    duplicate[i][j] = 2;
+                    changedThisMinute++;
+                    continue;
+                }
+
+            }
+
+            if (checkIfInvalidIndex(i, j - 1)) {
+ 
+                if (grid[i][j - 1] == 2) {
+                    duplicate[i][j] = 2;
+                    changedThisMinute++;
+                    continue;
+                }
+
+            }
+
+            if (checkIfInvalidIndex(i+1, j)) {
+
+                if (grid[i][j - 1] == 2) {
+                    duplicate[i][j] = 2;
+                    changedThisMinute++;
+                    continue;
+                }
+
+            }
+
+            if (checkIfInvalidIndex(i - 1, j)) {
+
+                if (grid[i - 1][j] == 2) {
+                    duplicate[i][j] = 2;
+                    changedThisMinute++;
+                    continue;
+                }
+
+            }
+
+        }
+
+    }
+
+    if(changedThisMinute>0) {
+        minimumTimeForToRot++
+    }
+
+    grid = structuredClone(duplicate);
+}
+while(changedThisMinute>0);
+
+console.log((foundFreshFruit && (changedThisMinute == 0)) ? -1 : minimumTimeForToRot)
+
+function checkIfInvalidIndex(i, j) {
+    if((i >= 0 && i < n) && (j >= 0 && j < n))
+        return true;
+    return false;
+}
