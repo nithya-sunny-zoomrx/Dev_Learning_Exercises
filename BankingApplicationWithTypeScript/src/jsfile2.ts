@@ -1,5 +1,9 @@
-let currentUser = JSON.parse(localStorage.getItem("UserInfo"));
-let arrayData = currentUser.accountDetails;
+import { userDetailsType as userDetailsType } from './index';
+import { accountDetailsType as accountDetailsType } from './index';
+
+const userInfoFromLocalStorage : string = localStorage.getItem("UserInfo")!;
+let currentUser : userDetailsType = JSON.parse(userInfoFromLocalStorage);
+let arrayData : accountDetailsType[] = currentUser.accountDetails;
 
 document.addEventListener("DOMContentLoaded", initialize);
 
@@ -12,14 +16,14 @@ function initialize() {
 
 function createTable() {
     // Get the table body element
-    const tableBody = document.querySelector('#accountTable tbody');
+    const tableBody = document.querySelector('#accountTable tbody')!;
 
     // Insert the rows into the table body
     tableBody.innerHTML = createTableRows(currentUser.accountDetails);
 }
 
 // Function to create table rows
-function createTableRows(accountDetails) {
+function createTableRows(accountDetails : accountDetailsType[] ) {
     return accountDetails.map((detail, index) => {
         return `<tr>
                             <td>${detail.accountNumber}</td>
@@ -34,21 +38,48 @@ function createTableRows(accountDetails) {
 }
 
 // Function to handle Withdraw
-function handleWithdraw(index) {
-    const amount = parseFloat(prompt('Enter amount to withdraw:'));
+function handleWithdraw(index : number) {
+    
+    const userInput = prompt('Enter amount to deposit:');
+    let validUserInput : string;
+
+    if(userInput)
+        validUserInput = userInput;
+    else {
+        alert("Enter a valid integer value");
+        return;
+    }
+
+    const amount : number = parseFloat(validUserInput);
 
     if (checkInvalidAmount(amount)) {
         alert('Invalid amount.');
         return;
     }
+    else if(currentUser.accountDetails[index].balance < amount) {
+        alert("Low balance! Enter amonut lesser or same as balance");
+        return;
+    }
+
 
     currentUser.accountDetails[index].balance -= amount;
     updateBalance(index);
 }
 
 // Function to handle Deposit
-function handleDeposit(index) {
-    const amount = parseFloat(prompt('Enter amount to deposit:'));
+function handleDeposit(index : number) : void {
+
+    const userInput = prompt('Enter amount to deposit:');
+    let validUserInput : string;
+
+    if(userInput)
+        validUserInput = userInput;
+    else {
+        alert("Enter a valid integer value");
+        return;
+    }
+
+    const amount : number = parseFloat(validUserInput);
 
     if (checkInvalidAmount(amount)) {
         alert('Invalid amount.');
@@ -60,33 +91,33 @@ function handleDeposit(index) {
 }
 
 // Function to update the balance in the table
-function updateBalance(index) {
-    document.getElementById(`balance-${index}`).innerText = currentUser.accountDetails[index].balance;
+function updateBalance(index : number) : void {
+    document.getElementById(`balance-${index}`)!.innerText = (currentUser.accountDetails[index].balance).toString();
     localStorage.setItem("UserInfo", JSON.stringify(currentUser));
 }
 
 // Function to display user name on top of the page
-function displayUserName() {
+function displayUserName() : void {
     let myString1 = `Name  : ${currentUser.name}`;
-    let outputElement1 = document.getElementById("userName");
-    outputElement1.innerHTML = myString1;
+    let $outputElement1 = document.getElementById("userName")!;
+    $outputElement1.innerHTML = myString1;
 }
 
 // Function to display user mail id on top of the page
-function displayUserMail() {
+function displayUserMail() : void {
     let myString1 = `E-Mail  : ${currentUser.eMail}`;
-    let outputElement1 = document.getElementById("mail");
-    outputElement1.innerHTML = myString1;
+    let $outputElement1 = document.getElementById("mail")!;
+    $outputElement1.innerHTML = myString1;
 }
 
 // Function to display user phone number on top of the page
-function displayUserNumber() {
+function displayUserNumber() : void {
     let myString1 = `Phone No:   ${currentUser.phone}`;
-    let outputElement1 = document.getElementById("phone");
-    outputElement1.innerHTML = myString1;
+    let $outputElement1 = document.getElementById("phone")!;
+    $outputElement1.innerHTML = myString1;
 }
 
-function checkInvalidAmount(amount) {
+function checkInvalidAmount(amount : number) : boolean{
 
     if (isNaN(amount) || amount <= 0) {
         return true;

@@ -9,8 +9,10 @@ let arr2 = [false, false, false, false];
 let outputarr1 = [];
 let outputarr2 = [];
 
-for (let element of arr2) {
-    element ? outputarr1.push(element) : outputarr2.push(element);
+arr2.forEach(addElementToOutput)
+
+function addElementToOutput(element,index) {
+    element ? outputarr1.push(arr1[index]) : outputarr2.push(arr1[index]);
 }
 
 alert(outputarr1);
@@ -23,7 +25,7 @@ let splitarr = x.split(" ");
 let output = '';
 
 splitarr.forEach(function (element , index ) {
-    (index==0) ? output += element : output += (element.toLowerCase());
+    output  += (index==0) ? element : (element.toLowerCase());
 });
 
 alert(output);
@@ -170,17 +172,17 @@ setInterval(digitalClock, 1000);
 
 
 // Week 2- Q2
-function recursiveFunction(arrayOfObj,currentIndex,lengthOfArray,target) {
+function recursiveFunction(arrayOfObj, currentIndex, lengthOfArray, target) {
 
     if(currentIndex == lengthOfArray) 
         return -1;
 
 
-    if( (arrayOfObj[currentIndex][0] === target) || (arrayOfObj[currentIndex][1] === target) ) 
+    if((arrayOfObj[currentIndex][0] === target) || (arrayOfObj[currentIndex][1] === target)) 
         return arrayOfObj[currentIndex];
 
 
-    return recursiveFunction(arrayOfObj,currentIndex+1,lengthOfArray,target)
+    return recursiveFunction(arrayOfObj, currentIndex+1, lengthOfArray, target)
 
 }
 
@@ -257,60 +259,43 @@ JS Logical Programming Questions
 
 // 1. Merge Limits
 
-let input = [[1, 3], [2, 6], [8, 10], [15, 18], [2, 4], [4, 10]];
+let input = [[1, 3], [2, 6], [8, 10], [15, 18], [2, 4], [7, 10]];
 let result = [];
 
 for (let i = 0; i < input.length; i++) {
 
-    if (!(input[i] == null)) {
-
-        for (let j = 0; j < input.length; j++) {
-
-            if ((i == j)) {
-                continue;
-            }
-
-            if (!(input[j] == null)) {
-
-                if ((input[j][0] >= input[i][0]) && (input[j][0] <= input[i][1])) {
-
-                    if (input[j][1] > input[i][1]) {
-                        input[i][1] = input[j][1]
-                    }
-
-
-                    input[j] = null;
-
-                }
-
-                else if ((input[j][1] >= input[i][0]) && (input[j][1] <= input[i][1])) {
-
-                    if (input[j][0] < input[i][0]) {
-                        input[i][0] = input[j][0]
-                    }
-
-
-                    input[j] = null;
-
-                }
-
-            }
-
-        }
-
-        if (!containsElement(result, input[i]))
-            result.push(input[i]);
-
+    if(result.length==0) {
+        result.push(input[i]);
+        continue;
     }
+
+    let elemntAddedToResult = false;
+
+    for(let j=0;j<result.length;j++) {
+        
+        if((input[i][0] >= result[j][0]) && (input[i][1] <= result[j][1])) {
+            elemntAddedToResult = true;
+            break;
+        }
+        else if((input[i][0] >= result[j][0]) && (input[i][0] <= result[j][1])) {
+            result[j][1] = input[i][1];
+            elemntAddedToResult = true;
+            break;
+        }
+        else if((input[i][1] >= result[j][0]) && (input[i][1] <= result[j][1])) {
+            result[j][0] = input[i][0];
+            elemntAddedToResult = true;
+            break;
+        }
+    }
+
+    if(!elemntAddedToResult)
+        result.push(input[i]);
 
 }
 
 for (let limits of result) {
     console.log(limits);
-}
-
-function containsElement(arr, element) {
-    return arr.some(e => e[0] === element[0] && e[1] === element[1]);
 }
 
 // 2. k-th Max in unsorted array
@@ -354,16 +339,18 @@ console.log(arr[k - 1]);
 // 3.Longest Substring without repeating characters
 const inputString = "abcabcbb";
 let longestSubString = "";
+let longestStringLength = 0;
 
 for (let i = 0; i < inputString.length; i++) {
 
-    for (let j = 0; j < inputString.length; j++) {
+    for (let j = i+longestStringLength; j < inputString.length; j++) {
 
         if (isGivenStringUnique(inputString.substring(i, j + 1))) {
 
             if (inputString.substring(i, j + 1).length > longestSubString.length) {
 
                 longestSubString = inputString.substring(i, j + 1);
+                longestStringLength = longestSubString.length;
 
             }
 
@@ -383,7 +370,7 @@ function isGivenStringUnique(givenString) {
 
         for (let j = i + 1; j < givenString.length; j++) {
 
-            if (givenString[i] == givenString[j])
+            if (givenString[i] === givenString[j])
                 return false;
 
         }
@@ -408,7 +395,7 @@ for (let i = 0; i < s.length; i++) {
             
             if (isContainsAllCharactersInT(s.substring(i, j + 1), t)) {
 
-                if ((minimumWindowSubString == null) || (s.substring(i, j + 1).length < minimumWindowSubString.length)) {
+                if ((minimumWindowSubString === null) || (s.substring(i, j + 1).length < minimumWindowSubString.length)) {
 
                     minimumWindowSubString = s.substring(i, j + 1);
 
@@ -430,7 +417,7 @@ function isContainsAllCharactersInT(s,t) {
 
         for (let charInS of s) {
 
-            if(charInS == charInT)
+            if(charInS === charInT)
                 charFound = true;
 
         }
@@ -451,7 +438,7 @@ console.log(minimumWindowSubString);
 let grid = [[2, 1, 1], [1, 1, 0], [0, 1, 1]];
 let duplicate = structuredClone(grid);
 let n = grid[0].length;
-let minimumTimeForToRot = 0;
+let minimumTimeForAllOrangesToRot = 0;
 let changedThisMinute = 0;
 let foundFreshFruit;
 
@@ -465,15 +452,15 @@ do {
 
         for (let j = 0; j < n; j++) {
 
-            if (grid[i][j] == 0 || grid[i][j] == 2) {
+            if (grid[i][j] === 0 || grid[i][j] === 2) {
                 continue;
             }
             
             foundFreshFruit = true;
 
-            if (checkIfInvalidIndex(i, j + 1)) {
+            if (checkIfInvalidIndex(i, j + 1) || checkIfInvalidIndex(i, j - 1)) {
                 
-                if (grid[i][j + 1] == 2) {
+                if (grid[i][j + 1] === 2 || grid[i][j - 1] === 2) {
                     duplicate[i][j] = 2;
                     changedThisMinute++;
                     continue;
@@ -481,29 +468,9 @@ do {
 
             }
 
-            if (checkIfInvalidIndex(i, j - 1)) {
- 
-                if (grid[i][j - 1] == 2) {
-                    duplicate[i][j] = 2;
-                    changedThisMinute++;
-                    continue;
-                }
+            if (checkIfInvalidIndex(i + 1, j) || checkIfInvalidIndex(i - 1, j)) {
 
-            }
-
-            if (checkIfInvalidIndex(i+1, j)) {
-
-                if (grid[i][j - 1] == 2) {
-                    duplicate[i][j] = 2;
-                    changedThisMinute++;
-                    continue;
-                }
-
-            }
-
-            if (checkIfInvalidIndex(i - 1, j)) {
-
-                if (grid[i - 1][j] == 2) {
+                if (grid[i][j - 1] == 2 || grid[i - 1][j] == 2) {
                     duplicate[i][j] = 2;
                     changedThisMinute++;
                     continue;
@@ -515,18 +482,104 @@ do {
 
     }
 
-    if(changedThisMinute>0) {
-        minimumTimeForToRot++
+    if(changedThisMinute > 0) {
+        minimumTimeForAllOrangesToRot++
     }
 
     grid = structuredClone(duplicate);
 }
-while(changedThisMinute>0);
+while(changedThisMinute > 0);
 
-console.log((foundFreshFruit && (changedThisMinute == 0)) ? -1 : minimumTimeForToRot)
+console.log((foundFreshFruit && (changedThisMinute == 0)) ? -1 : minimumTimeForAllOrangesToRot)
 
 function checkIfInvalidIndex(i, j) {
     if((i >= 0 && i < n) && (j >= 0 && j < n))
         return true;
     return false;
 }
+
+
+// 5.Height Balanced Tree
+// Define the TreeNode class
+class TreeNode {
+    constructor(val = 0, left = null, right = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+let isHeightBalanced = true;
+
+function arrayToTree(arr) {
+    
+    let root = new TreeNode(arr[0]);
+    let queue = [root];
+
+    let i = 1;
+
+    while (i < arr.length) {
+        let currentNode = queue.shift();
+
+        if (arr[i] !== null) {
+            currentNode.left = new TreeNode(arr[i]);
+            queue.push(currentNode.left);
+        }
+
+        i++;
+
+        if (i < arr.length && arr[i] !== null) {
+            currentNode.right = new TreeNode(arr[i]);
+            queue.push(currentNode.right);
+        }
+        
+        i++;
+    }
+
+    return root;
+}
+
+function preorderTraversal(node)
+{
+   
+    if (node === null)
+        return;
+
+    let one = heightOfNode(node.right);
+    let two = heightOfNode(node.left);
+
+    if(Math.abs( one - two ) > 1)
+        isHeightBalanced = false;
+
+    if(!isHeightBalanced)
+        return
+
+    //Recur on the left subtree
+    preorderTraversal(node.left);
+
+    //Recur on the right subtree
+    preorderTraversal(node.right);
+}
+
+function heightOfNode(node) {
+
+    if(node == null){
+        console.log("1" +node)
+        return 0;
+    }
+
+    if((node.left == null) && (node.right == null)){
+        console.log("2 " + node.val)
+        return 0;
+    }
+
+    return Math.max(heightOfNode(node.left),heightOfNode(node.right)) + 1;
+}
+
+const arrar = [1, 2, null, 3, null, 4];
+const tree = arrayToTree(arrar);
+
+console.log(tree);
+preorderTraversal(tree);
+console.log(isHeightBalanced);
+
