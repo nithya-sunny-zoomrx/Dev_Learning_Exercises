@@ -1,0 +1,4 @@
+# Ignore specific JavaScript files in the src folder
+src/index.js
+src/jsfile2.js
+
