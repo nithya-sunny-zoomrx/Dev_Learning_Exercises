@@ -40,27 +40,19 @@ function createTableRows(accountDetails : accountDetailsType[] ) {
 // Function to handle Withdraw
 function handleWithdraw(index : number) {
     
-    const userInput = prompt('Enter amount to deposit:');
-    let validUserInput : string;
+    let userInput = prompt('Enter amount to deposit:');
+    let amount : number = parseFloat(userInput);
 
-    if(userInput)
-        validUserInput = userInput;
-    else {
-        alert("Enter a valid integer value");
-        return;
+    while(!checkInvalidAmount(amount)){
+        alert("Enter a valid interger value")
+        userInput = prompt('Enter amount to deposit:');
+        amount = parseFloat(userInput);
     }
 
-    const amount : number = parseFloat(validUserInput);
-
-    if (checkInvalidAmount(amount)) {
-        alert('Invalid amount.');
-        return;
-    }
-    else if(currentUser.accountDetails[index].balance < amount) {
+    if(currentUser.accountDetails[index].balance < amount) {
         alert("Low balance! Enter amonut lesser or same as balance");
         return;
     }
-
 
     currentUser.accountDetails[index].balance -= amount;
     updateBalance(index);
@@ -69,21 +61,13 @@ function handleWithdraw(index : number) {
 // Function to handle Deposit
 function handleDeposit(index : number) : void {
 
-    const userInput = prompt('Enter amount to deposit:');
-    let validUserInput : string;
-
-    if(userInput)
-        validUserInput = userInput;
-    else {
-        alert("Enter a valid integer value");
-        return;
-    }
-
-    const amount : number = parseFloat(validUserInput);
-
-    if (checkInvalidAmount(amount)) {
-        alert('Invalid amount.');
-        return;
+    let userInput = prompt('Enter amount to deposit:');
+    let amount : number = parseFloat(userInput);
+    
+    while(!checkInvalidAmount(amount)){
+        alert("Enter a valid interger value")
+        userInput = prompt('Enter amount to deposit:');
+        amount = parseFloat(userInput);
     }
 
     currentUser.accountDetails[index].balance += amount;
@@ -119,7 +103,7 @@ function displayUserNumber() : void {
 
 function checkInvalidAmount(amount : number) : boolean{
 
-    if (isNaN(amount) || amount <= 0) {
+    if ((!isNaN(amount)) && amount > 0) {
         return true;
     }
 

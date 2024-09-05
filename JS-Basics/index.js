@@ -490,7 +490,8 @@ do {
 }
 while(changedThisMinute > 0);
 
-console.log((foundFreshFruit && (changedThisMinute == 0)) ? -1 : minimumTimeForAllOrangesToRot)
+// Adding the or condition to return '-1' if there are no fresh friut is found and all are either empty/rotten
+console.log((foundFreshFruit && (changedThisMinute == 0) || !foundFreshFruit) ? -1 : minimumTimeForAllOrangesToRot)
 
 function checkIfInvalidIndex(i, j) {
     if((i >= 0 && i < n) && (j >= 0 && j < n))

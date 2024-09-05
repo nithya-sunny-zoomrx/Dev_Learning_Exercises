@@ -60,12 +60,7 @@ function navigate(): void {
     const userNameInput = document.getElementById("userNameId") as HTMLInputElement;
     const userName = userNameInput.value;
 
-    for (let user of userDetails) {
-        if (user.name == userName) {
-            currentUser = user;
-            break;
-        }
-    }
+    currentUser = userDetails.find(user => user.name === userName);
 
     if (currentUser == null) {
         alert("Enter Valid User Info")

@@ -1,9 +1,9 @@
 // 1.Basic Types
 let booleanVar: boolean = true;
 let numVar: number = 123;
-let stringVar: string = "Hello World!";
-let stringArrayVar: string[] = ["One", "Two", "Three", "Four", "Five"];
-let tuple: [string, number, boolean] = ["Name", 1, true];
+let stringVar: string = 'Hello World!';
+let stringArrayVar: string[] = ['One', 'Two', 'Three', 'Four', 'Five'];
+let tuple: [string, number, boolean] = ['Name', 1, true];
 
 // 2.Functions
 function addTwoNumbers(num1: number, num2: number): number {
