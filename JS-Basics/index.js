@@ -435,69 +435,80 @@ console.log(minimumWindowSubString);
 
 
 // 6. Rotting Oranges
-let grid = [[2, 1, 1], [1, 1, 0], [0, 1, 1]];
-let duplicate = structuredClone(grid);
+let grid = [[2, 1, 0], [0, 1, 0], [0, 0, 1]];
 let n = grid[0].length;
-let minimumTimeForAllOrangesToRot = 0;
-let changedThisMinute = 0;
-let foundFreshFruit;
+let outputTiming = [];
+let matrix;
 
+function recursiveFunctionForRottenFruit(i,j) {
 
-do {
+    // Make the corresponding 'matrix' variable value as 1 to mark the index as a already visited element
+    matrix[i][j] = 1;
 
-    changedThisMinute = 0;
-    foundFreshFruit = false;
+    // If the element is 'Empty(0)' return -1
+    if(grid[i][j] == 0)
+        return -1;
 
-    for (let i = 0; i < n; i++) {
+    // If the element is 'Rotten(2)' return 0 as to orange is already rotten
+    if(grid[i][j] == 2)
+        return 0;
 
-        for (let j = 0; j < n; j++) {
+    let values = [];
+    
+    // Get the time for the orange to it's right side to rot (Only if it is a valid index and if the index is already visited it will return -2)
+    if(checkIfInvalidIndex(i, j + 1))
+        (matrix[i][j + 1] == 1) ? values.push(-1) : values.push(recursiveFunctionForRottenFruit(i, j + 1));
 
-            if (grid[i][j] === 0 || grid[i][j] === 2) {
-                continue;
-            }
-            
-            foundFreshFruit = true;
+    // Get the time for the orange to it's left side to rot    
+    if(checkIfInvalidIndex(i, j - 1))
+        (matrix[i][j - 1] == 1) ? values.push(-1)  : values.push(recursiveFunctionForRottenFruit(i, j - 1));
 
-            if (checkIfInvalidIndex(i, j + 1) || checkIfInvalidIndex(i, j - 1)) {
-                
-                if (grid[i][j + 1] === 2 || grid[i][j - 1] === 2) {
-                    duplicate[i][j] = 2;
-                    changedThisMinute++;
-                    continue;
-                }
+    // Get the time for the orange below the current orange to rot
+    if(checkIfInvalidIndex(i + 1, j))
+        (matrix[i + 1][j] == 1) ? values.push(-1)  : values.push(recursiveFunctionForRottenFruit(i + 1, j));
 
-            }
+    // Get the time for the orange above the current orange to rot
+    if(checkIfInvalidIndex(i - 1, j))
+        (matrix[i - 1][j] == 1)  ? values.push(-1) : values.push(recursiveFunctionForRottenFruit(i - 1, j));
 
-            if (checkIfInvalidIndex(i + 1, j) || checkIfInvalidIndex(i - 1, j)) {
+    /* 
+    Create an list without '-1' present in it to determine the min time to rot
+    If all values are -2 indicating it is imposible for the orange to rot the length of filteredValues will be 0
+    */
+    const filteredValues = values.filter(val => val !== -1);
 
-                if (grid[i][j - 1] == 2 || grid[i - 1][j] == 2) {
-                    duplicate[i][j] = 2;
-                    changedThisMinute++;
-                    continue;
-                }
-
-            }
-
-        }
-
-    }
-
-    if(changedThisMinute > 0) {
-        minimumTimeForAllOrangesToRot++
-    }
-
-    grid = structuredClone(duplicate);
+    // Return -2 if impossible to rot else return the min of adjacent orange to rot plus 1
+    return (filteredValues.length > 0) ? Math.min(...filteredValues) + 1 : -2;
 }
-while(changedThisMinute > 0);
 
-// Adding the or condition to return '-1' if there are no fresh friut is found and all are either empty/rotten
-console.log((foundFreshFruit && (changedThisMinute == 0) || !foundFreshFruit) ? -1 : minimumTimeForAllOrangesToRot)
+for(let i = 0; i < n; i++){
+
+    for(let j = 0; j < n; j++) {
+        // Create a NxN matrix to identify which index have already been visited to avoid infinite loop scenario
+        matrix = createMatrix(n);
+        // Get the min time required to rot for each element in the grid in an array
+        outputTiming.push(recursiveFunctionForRottenFruit(i,j));
+    }
+
+}
+
+function createMatrix(n) {
+    // Create an n x n matrix initialized with 0
+    return Array.from({ length: n }, () => Array(n).fill(0));
+  }
 
 function checkIfInvalidIndex(i, j) {
     if((i >= 0 && i < n) && (j >= 0 && j < n))
         return true;
     return false;
 }
+
+// check if there are any oranges that are inposible to rot by search for a -2 in the array
+const isImposibleToRotOrangesPresent = outputTiming.some(val => val === -2);
+
+// Return -1 is there are impossiblr to rot orange present or the max value in the outputTiming list
+const minTimeToRot = isImposibleToRotOrangesPresent ? -1 : Math.max(...outputTiming);
+console.log(minTimeToRot);
 
 
 // 5.Height Balanced Tree
