@@ -1,18 +1,21 @@
 let currentUser = JSON.parse(localStorage.getItem("UserInfo"));
 let arrayData = currentUser.accountDetails;
 
-// Get the table body element
-const tableBody = document.querySelector('#accountTable tbody');
-
-// Insert the rows into the table body
-tableBody.innerHTML = createTableRows(currentUser.accountDetails);
-
-document.addEventListener("DOMContentLoaded", initialize); 
+document.addEventListener("DOMContentLoaded", initialize);
 
 function initialize() {
     displayUserName();
     displayUserMail();
     displayUserNumber();
+    createTable();
+}
+
+function createTable() {
+    // Get the table body element
+    const tableBody = document.querySelector('#accountTable tbody');
+
+    // Insert the rows into the table body
+    tableBody.innerHTML = createTableRows(currentUser.accountDetails);
 }
 
 // Function to create table rows
@@ -33,8 +36,8 @@ function createTableRows(accountDetails) {
 // Function to handle Withdraw
 function handleWithdraw(index) {
     const amount = parseFloat(prompt('Enter amount to withdraw:'));
-    
-    if (isNaN(amount) || amount <= 0) {
+
+    if (checkInvalidAmount(amount)) {
         alert('Invalid amount.');
         return;
     }
@@ -47,11 +50,11 @@ function handleWithdraw(index) {
 function handleDeposit(index) {
     const amount = parseFloat(prompt('Enter amount to deposit:'));
 
-    if (isNaN(amount) || amount <= 0) {
+    if (checkInvalidAmount(amount)) {
         alert('Invalid amount.');
         return;
     }
-    
+
     currentUser.accountDetails[index].balance += amount;
     updateBalance(index);
 }
@@ -81,4 +84,13 @@ function displayUserNumber() {
     let myString1 = `Phone No:   ${currentUser.phone}`;
     let outputElement1 = document.getElementById("phone");
     outputElement1.innerHTML = myString1;
+}
+
+function checkInvalidAmount(amount) {
+
+    if (isNaN(amount) || amount <= 0) {
+        return true;
+    }
+
+    return false;
 }

@@ -1,8 +1,19 @@
-"use strict";
+export let currentUser: null | userDetailsType = null;
 
+export interface accountDetailsType {
+    accountNumber: number,
+    accountType: string,
+    balance: number
+}
 
-let currentUser = null;
-let userDetails = [
+export interface userDetailsType {
+    name: string;
+    eMail: string,
+    phone: number,
+    accountDetails: accountDetailsType[]
+}
+
+export const userDetails: userDetailsType[] = [
     {
         name: "Nithya",
         eMail: "qqq.sss@gmail.com",
@@ -44,16 +55,12 @@ let userDetails = [
     },
 ];
 
+function navigate(): void {
 
-function navigate() {
-    let userName = document.getElementById("userNameId").value;
+    const userNameInput = document.getElementById("userNameId") as HTMLInputElement;
+    const userName = userNameInput.value;
 
-    for (let user of userDetails) {
-        if (user.name == userName) {
-            currentUser = user;
-            break;
-        }
-    }
+    currentUser = userDetails.find(user => user.name === userName);
 
     if (currentUser == null) {
         alert("Enter Valid User Info")
@@ -66,7 +73,10 @@ function navigate() {
     window.location.href = 'userDetails.html';
 }
 
-function reset() {
-    document.getElementById("userNameId").value = "";
-    document.getElementById("password").value = "";
+function reset(): void {
+    const userNameInput = document.getElementById("userNameId") as HTMLInputElement;
+    userNameInput.value = "";
+
+    const userPasswordInput = document.getElementById("password") as HTMLInputElement;
+    userPasswordInput.value = "";
 }
